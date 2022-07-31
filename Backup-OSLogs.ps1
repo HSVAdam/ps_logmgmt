@@ -23,7 +23,6 @@
 #>
 
 #region VARIABLES
-$DomainGroup = ''
 $LogFiles = @('System.evtx', 'Security.evtx', 'Application.evtx')
 $BackupRoot = ''
 $ClearLog = $true
@@ -96,7 +95,7 @@ TRY
     New-LogEntry -Message 'Beginning OS Log Processing' -Level Start
 
     # Get listing of all computers from domain security group
-    IF ($ServerList = (Get-ADGroupMember -Identity $DomainGroup).Name)
+    IF ($ServerList = (Get-ADComputer -Filter 'OperatingSystem -like "*Server*" -and Enabled -eq $true').Name)
     {
         New-LogEntry -Message "Obtained server list from [$DomainGroup]"
         FOREACH ($Server in $ServerList)
